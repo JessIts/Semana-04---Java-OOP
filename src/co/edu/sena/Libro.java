@@ -1,61 +1,26 @@
 package co.edu.sena;
 
-//Clase que define como sera el libro dentro de mi biblioteca
-public class Libro {
-  // Atributos privados
-  private int id;
-  private String titulo;
-  private String autor;
-  private Double price;
-  private int anioPublicacion;
+//Se crea la clase extendiendo la desde la superclase publicacion
+public class Libro extends Publicacion {
+  private int anioPublicacion; //nuevo atributo solo para los libros
 
-  // Constructor
-  public Libro(int id, String titulo, String autor, Double price, int anioPublicacion) {
-    this.id = id;
-    this.titulo = titulo;
-    this.autor = autor;
-    this.price = price;
+  //Constructor para libros, añadiendo el año a la plantilla base
+  public Libro(int id, String titulo, String autor, double precio, int anioPublicacion) {
+    super(id, titulo, autor, precio);
     this.anioPublicacion = anioPublicacion;
   }
 
-  // Getters para obtener la informacion, y setters para modificarla/actualizarla
-  public int getId() {
-    return id;
-  }
-  public void setId(int id) {
-    this.id = id;
-  }
-  public String getTitulo() {
-    return titulo;
-  }
-  public void setTitulo(String titulo) {
-    this.titulo = titulo;
-  }
-  public String getAutor() {
-    return autor;
-  }
-  public void setAutor(String autor) {
-    this.autor = autor;
-  }
-  public Double getPrice(){
-    return price;
-  }
-  public void setPrice(Double price){
-    this.price = price;
-  }
-  public int getAnioPublicacion() {
-    return anioPublicacion;
+  //Identifica que tipo de publicacion es; sobreescribe un metodo de publicacion
+  @Override
+  public String getTipo() {
+    return "Libro";
   }
 
-  public void setAnioPublicacion(int anioPublicacion) {
-    this.anioPublicacion = anioPublicacion;
-  }
-
-  @Override //permite asegurarnos de que un metodo se puede sobreescribir
-
-  //permite ver un libro, o su informacion, como un string para imprimirlo bien piola
+  //Sobreescribe el metodo de publicacion, y le añade nuevos parámetros
+  @Override
   public String toString() {
-    return "Libro [ID=" + id + ", Título=" + titulo + ", Autor=" + autor + ", Precio=" + price + ", Año=" + anioPublicacion + "]";
+    return super.toString() + ", Año=" + anioPublicacion + "]";
   }
 }
+
 

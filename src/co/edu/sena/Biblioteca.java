@@ -1,78 +1,65 @@
 package co.edu.sena;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-//Clase para guardar los libros
 public class Biblioteca {
 
-  // Lista de libros
+  private Map<Integer, Publicacion> publicaciones = new HashMap<>();
 
-  /* Diccionario de libros, donde almacenaré diferentes
-  libros iniciando una instancia vacía que puede crecer
-  o disminuirse, indicando que solo puede tener objetos
-  de la clase Libros.
-   */
-  private ArrayList<Libro> libros = new ArrayList<>();
-
-  //Funcion para añadir libros
-  public void agregarLibro(Libro libro) {
-    libros.add(libro);
-    System.out.println("Libro agregado correctamente.");
+  //Primer metodo para agregar una publicacion a la "biblioteca"
+  public void agregarPublicacion(Publicacion p) {
+    publicaciones.put(p.getId(), p);
+    System.out.println("Publicación agregada.");
   }
 
-  //Función que muestra todos los libros registrados
-  public void listarLibros() {
+  //Metodo para agregar una publicacion a la "biblioteca" con parametros diferentes del primero
+  public void agregarPublicacion(int id, String titulo, String autor, double precio) {
+    Publicacion p = new Libro(id, titulo, autor, precio, 0);
+    agregarPublicacion(p);
+  }
 
-    //compruebo si la lista de libros esta vacía
-    if (libros.isEmpty()) {
-      System.out.println("No hay libros registrados.");
-    } else {
-      System.out.println("Lista de libros:");
-
-      //Un ciclo para que imprima cada libro, dentro de libros
-      for (Libro l : libros) {
-        System.out.println(l);
-      }
+  //Metodo para mostrar todas las publicaciones en la "biblioteca"
+  public void listarPublicaciones() {
+    if (publicaciones.isEmpty()) {
+      System.out.println("No hay publicaciones registradas.");
+      return;
+    }
+    //Por cada publicacion dentro de las publicaciones, mostrará sus respectivos valores
+    for (Publicacion p : publicaciones.values()) {
+      System.out.println(p);
     }
   }
 
-  //Funcion para listar los libros, filtrando por ID
-  public Libro buscarLibro(int id) {
-    for (Libro l : libros) {
-      if (l.getId() == id) {
-        return l;
-      }
-    }
-    return null;
+  //Busca y obtiene el id de una publicacion
+  public Publicacion buscar(int id) {
+    return publicaciones.get(id);
   }
 
-  //Funcion para modificar los datos de los li8bros
-  public void actualizarLibro(int id, String nuevoTitulo, String nuevoAutor, Double nuevoPrice, int nuevoAnio) {
-    Libro libro = buscarLibro(id);
-    if (libro != null) {
+  //Actualiza la informacion de la publicacion si hay un ID valido
+  public void actualizarPublicacion(int id, String titulo, String autor, double precio) {
 
-      /*acá usamos los setters que definimos antes en la
-      calse Libro para actualizar informacion jejeje
-       */
-      libro.setTitulo(nuevoTitulo);
-      libro.setAutor(nuevoAutor);
-      libro.setPrice(nuevoPrice);
-      libro.setAnioPublicacion(nuevoAnio);
-      System.out.println("Libro actualizado correctamente.");
+    Publicacion p = buscar(id);
+
+    //Actualiza la informacion utilizando los setters de publicacion
+    if (p != null) {
+      p.setTitulo(titulo);
+      p.setAutor(autor);
+      p.setPrecio(precio);
+      System.out.println("Publicación actualizada.");
     } else {
-      System.out.println("Libro no encontrado.");
+      System.out.println("No existe una publicación con ese ID.");
     }
   }
 
-  //Funcion para eliminar un libro teniendo en cuenta su ID
-  public void eliminarLibro(int id) {
-    Libro libro = buscarLibro(id);
-    if (libro != null) {
-      libros.remove(libro);
-      System.out.println("Libro eliminado correctamente.");
+  //Elimina una publicacion si councide con el ID
+  public void eliminarPublicacion(int id) {
+    if (publicaciones.remove(id) != null) {
+      System.out.println("Publicación eliminada.");
     } else {
-      System.out.println("Libro no encontrado.");
+      System.out.println("No se encontró la publicación.");
     }
   }
 }
+
 

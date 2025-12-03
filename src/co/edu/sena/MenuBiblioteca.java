@@ -1,115 +1,150 @@
 package co.edu.sena;
 
+/* Importo funciones de la superclase util,
+* aunque podría importar varias al mismo tiempo con .* */
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
-/*clase que muestra el menu, sin embargo aca podemos
-hacer mas menús :3
- */
+//Inicio de la clase Biblioteca
 public class MenuBiblioteca {
-  private Biblioteca biblioteca;
-  private Scanner sc;
 
-  // Constructor
+  //Creo una variable biblioteca y una scanner
+  private Biblioteca biblioteca;
+  private Scanner sc = new Scanner(System.in);
+
+  /*Metodo para crear un Menu de la biblioteca, usando como parámetros
+  a la clase biblioteca*/
   public MenuBiblioteca(Biblioteca biblioteca) {
-    this.biblioteca = biblioteca; //mi diccionario donde voy a guardar los libros
-    this.sc = new Scanner(System.in);
-    /*Cuando llamea sc, creare un objeto de la clase
-    scanner para poder leer datos ingresados por teclado*/
+    this.biblioteca = biblioteca;
   }
 
-  /* Funcion para mostrar el menú*/
+  //Metodo para mostrar el menu
   public void mostrarMenu() {
-    int opcion;
-    /* Inicio del ciclo de opciones*/
-    do {
-      System.out.println("\n=== MENÚ BIBLIOTECA ===");
-      System.out.println("1. Agregar libro");
-      System.out.println("2. Listar libros");
-      System.out.println("3. Actualizar libro");
-      System.out.println("4. Eliminar libro");
-      System.out.println("5. Salir");
-      System.out.print("Elige una opción: ");
-      opcion = sc.nextInt();
-      sc.nextLine(); // toma todos los caracteres que se agreguen, incluso con espacios
+    int opcion = 0;
+    do { //mientras se cumpla la condicion, el programa no se detendra
+      try {
+        System.out.println("\n=== MENÚ BIBLIOTECA ===");
+        System.out.println("1. Agregar Libro");
+        System.out.println("2. Agregar Revista");
+        System.out.println("3. Listar Publicaciones");
+        System.out.println("4. Actualizar Publicación");
+        System.out.println("5. Eliminar Publicación");
+        System.out.println("6. Salir");
+        System.out.print("Opción: ");
 
-      /* Selector para no hacer un reguero de
-      if
-        elif
-          elif
-            elif......
-              ELSE
-       */
-      switch (opcion) {
-        case 1:
-          agregarLibro();
-          break;
-        case 2:
-          biblioteca.listarLibros();
-          break;
-        case 3:
-          actualizarLibro();
-          break;
-        case 4:
-          eliminarLibro();
-          break;
-        case 5:
-          System.out.println("Hasta Pronto!!!...");
-          break;
-        default:
-          System.out.println("===Porfavor, ingrese una opcion válida===");
+        opcion = sc.nextInt();
+        sc.nextLine();
+
+        switch (opcion) {
+          case 1 -> agregarLibro();
+          case 2 -> agregarRevista();
+          case 3 -> biblioteca.listarPublicaciones();
+          case 4 -> actualizar();
+          case 5 -> eliminar();
+          case 6 -> System.out.println("Saliendo del sistema...");
+          default -> System.out.println("Porfavor, ingrese una opcion válida...");
+        } //cierra del switch
+
+      } catch (InputMismatchException e) {
+        System.out.println("Error: ingrese un número.");
+        sc.nextLine();
       }
 
-    } while (opcion != 5);
-  }
+    } while (opcion != 6); //cierre del ciclo
+  } //cierre de la funcion mostrarMenu()
 
-
-  //Funcion para agregar libros
+  //Inicio de la funcion agregarLibro()
   private void agregarLibro() {
-    System.out.print("ID del libro: ");
-    int id = sc.nextInt();
-    sc.nextLine();
-    System.out.print("Título: ");
-    String titulo = sc.nextLine();
-    System.out.print("Autor: ");
-    String autor = sc.nextLine();
-    System.out.print("Precio :");
-    Double price = sc.nextDouble();
-    System.out.print("Año de publicación: ");
-    int anio = sc.nextInt();
+    try {
+      System.out.print("ID: ");
+      int id = sc.nextInt();
+      sc.nextLine();
 
-    /* Acá hacemos uso del constructor en la clase libros
-    para crear los nuevos libros, usando la informacion
-    ingresada
-     */
-    Libro nuevo = new Libro(id, titulo, autor, price, anio);
-    biblioteca.agregarLibro(nuevo); //se añaden los datos del libro nuevo a la biblioteca
-  }
+      System.out.print("Título: ");
+      String titulo = sc.nextLine();
 
-  //Funcion para actualizar el libro
-  private void actualizarLibro() {
-    System.out.print("ID del libro a actualizar: ");
-    int id = sc.nextInt();
-    sc.nextLine();
-    System.out.print("Nuevo título: ");
-    String nuevoTitulo = sc.nextLine();
-    System.out.print("Nuevo autor: ");
-    String nuevoAutor = sc.nextLine();
-    System.out.print("Nuevo Precio: ");
-    Double nuevoPrice = sc.nextDouble();
-    System.out.print("Nuevo Año: ");
-    int nuevoAnio = sc.nextInt();
+      System.out.print("Autor: ");
+      String autor = sc.nextLine();
 
-    //Acá se actualizan los nuevos datos teniendo en cuenta el ID del libro
-    biblioteca.actualizarLibro(id, nuevoTitulo, nuevoAutor, nuevoPrice, nuevoAnio);
-  }
+      System.out.print("Precio: ");
+      double precio = sc.nextDouble();
 
-  //Funcion para eliminar un libro
-  private void eliminarLibro() {
-    System.out.print("ID del libro a eliminar: ");
-    int id = sc.nextInt();
+      System.out.print("Año publicación: ");
+      int anio = sc.nextInt();
 
-    //lo mismo, se eliminan teniendo en cuenta el ID
-    biblioteca.eliminarLibro(id);
-  }
-}
+      //Se usa el metodo de la clase biblioteca
+      biblioteca.agregarPublicacion(new Libro(id, titulo, autor, precio, anio));
+
+    } catch (Exception e) {
+      System.out.println("Error al agregar libro.");
+      sc.nextLine();
+    }
+  } //cierre de la funcion agregarLibro()
+
+  //Inicio de la funcion agregarRevista()
+  private void agregarRevista() {
+    try {
+      System.out.print("ID: ");
+      int id = sc.nextInt();
+      sc.nextLine();
+
+      System.out.print("Título: ");
+      String titulo = sc.nextLine();
+
+      System.out.print("Autor: ");
+      String autor = sc.nextLine();
+
+      System.out.print("Precio: ");
+      double precio = sc.nextDouble();
+
+      System.out.print("Número de edición: ");
+      int edicion = sc.nextInt();
+
+      //Se usa el metodo de la clase biblioteca
+      biblioteca.agregarPublicacion(new Revista(id, titulo, autor, precio, edicion));
+
+    } catch (Exception e) {
+      System.out.println("Error al agregar revista.");
+    }
+  }//Cierre de la funcion agregarRevista()
+
+  //metodos para actualizar las publicaciones
+  private void actualizar() {
+    try {
+      System.out.print("ID a actualizar: ");
+      int id = sc.nextInt();
+      sc.nextLine();
+
+      System.out.print("Nuevo título: ");
+      String titulo = sc.nextLine();
+
+      System.out.print("Nuevo autor: ");
+      String autor = sc.nextLine();
+
+      System.out.print("Nuevo precio: ");
+      double precio = sc.nextDouble();
+
+      //Se usa el metodo de la clase biblioteca
+      biblioteca.actualizarPublicacion(id, titulo, autor, precio);
+
+    } catch (Exception e) {
+      System.out.println("Error al actualizar.");
+    }
+  } //cierre del metodo actualizar
+
+  //Inicio del metodo para eliminar publicaciones
+  private void eliminar() {
+    try {
+      System.out.print("ID a eliminar: ");
+      int id = sc.nextInt();
+
+      //se usa el metodo de la clase biblioteca
+      biblioteca.eliminarPublicacion(id); //se elimina por id
+
+    } catch (Exception e) {
+      System.out.println("Error eliminando publicación.");
+    }
+  } //Cierre del metodo para eliminar publicaciones
+} //Cierre de la clase Principal
+
 

@@ -1,7 +1,6 @@
 package co.edu.sena;
 
-/*Mi hermosa, preciosa, bella clase principal donde
-se ejecuta todoo */
+//Mi hermosa, preciosa, bella e inigualable clase main
 public class Main {
   public static void main(String[] args) {
     Biblioteca biblioteca = new Biblioteca();
@@ -9,4 +8,5 @@ public class Main {
     menu.mostrarMenu();
   }
 }
+
 
