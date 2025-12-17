@@ -3,63 +3,73 @@ package co.edu.sena;
 import java.util.HashMap;
 import java.util.Map;
 
+import co.edu.sena.excepciones.personalizadas.PublicacionNoEncontrada;
+import co.edu.sena.excepciones.personalizadas.PublicacionDuplicada;
+import co.edu.sena.excepciones.personalizadas.PrecioInvalido;
+
 public class Biblioteca {
 
   private Map<Integer, Publicacion> publicaciones = new HashMap<>();
 
-  //Primer metodo para agregar una publicacion a la "biblioteca"
-  public void agregarPublicacion(Publicacion p) {
+  public void agregarPublicacion(Publicacion p)
+      throws PublicacionDuplicada, PrecioInvalido {
+
+    if (publicaciones.containsKey(p.getId())) {
+      throw new PublicacionDuplicada(p.getId());
+    }
+
+    if (p.precio <= 0) {
+      throw new PrecioInvalido(p.precio);
+    }
+
     publicaciones.put(p.getId(), p);
-    System.out.println("Publicación agregada.");
   }
 
-  //Metodo para agregar una publicacion a la "biblioteca" con parametros diferentes del primero
-  public void agregarPublicacion(int id, String titulo, String autor, double precio) {
-    Publicacion p = new Libro(id, titulo, autor, precio, 0);
-    agregarPublicacion(p);
+  public Publicacion buscar(int id)
+      throws PublicacionNoEncontrada {
+
+    Publicacion p = publicaciones.get(id);
+
+    if (p == null) {
+      throw new PublicacionNoEncontrada(id);
+    }
+
+    return p;
   }
 
-  //Metodo para mostrar todas las publicaciones en la "biblioteca"
   public void listarPublicaciones() {
     if (publicaciones.isEmpty()) {
       System.out.println("No hay publicaciones registradas.");
       return;
     }
-    //Por cada publicacion dentro de las publicaciones, mostrará sus respectivos valores
+
     for (Publicacion p : publicaciones.values()) {
       System.out.println(p);
     }
   }
 
-  //Busca y obtiene el id de una publicacion
-  public Publicacion buscar(int id) {
-    return publicaciones.get(id);
-  }
+  public void actualizarPublicacion(int id, String titulo, String autor, double precio)
+      throws PublicacionNoEncontrada, PrecioInvalido {
 
-  //Actualiza la informacion de la publicacion si hay un ID valido
-  public void actualizarPublicacion(int id, String titulo, String autor, double precio) {
+    if (precio <= 0) {
+      throw new PrecioInvalido(precio);
+    }
 
     Publicacion p = buscar(id);
 
-    //Actualiza la informacion utilizando los setters de publicacion
-    if (p != null) {
-      p.setTitulo(titulo);
-      p.setAutor(autor);
-      p.setPrecio(precio);
-      System.out.println("Publicación actualizada.");
-    } else {
-      System.out.println("No existe una publicación con ese ID.");
-    }
+    p.setTitulo(titulo);
+    p.setAutor(autor);
+    p.setPrecio(precio);
   }
 
-  //Elimina una publicacion si councide con el ID
-  public void eliminarPublicacion(int id) {
-    if (publicaciones.remove(id) != null) {
-      System.out.println("Publicación eliminada.");
-    } else {
-      System.out.println("No se encontró la publicación.");
+  public void eliminarPublicacion(int id)
+      throws PublicacionNoEncontrada {
+
+    if (publicaciones.remove(id) == null) {
+      throw new PublicacionNoEncontrada(id);
     }
   }
 }
+
 
 

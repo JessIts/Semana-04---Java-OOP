@@ -5,6 +5,10 @@ package co.edu.sena;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import co.edu.sena.excepciones.personalizadas.PublicacionNoEncontrada;
+import co.edu.sena.excepciones.personalizadas.PublicacionDuplicada;
+import co.edu.sena.excepciones.personalizadas.PrecioInvalido;
+
 //Inicio de la clase Biblioteca
 public class MenuBiblioteca {
 
@@ -72,14 +76,19 @@ public class MenuBiblioteca {
       System.out.print("Año publicación: ");
       int anio = sc.nextInt();
 
-      //Se usa el metodo de la clase biblioteca
-      biblioteca.agregarPublicacion(new Libro(id, titulo, autor, precio, anio));
+      biblioteca.agregarPublicacion(
+          new Libro(id, titulo, autor, precio, anio)
+      );
 
+      System.out.println("Libro agregado correctamente.");
+
+    } catch (PublicacionDuplicada | PrecioInvalido e) {
+      System.out.println(e.getMessage());
     } catch (Exception e) {
-      System.out.println("Error al agregar libro.");
+      System.out.println("Datos inválidos.");
       sc.nextLine();
     }
-  } //cierre de la funcion agregarLibro()
+  }//cierre de la funcion agregarLibro()
 
   //Inicio de la funcion agregarRevista()
   private void agregarRevista() {
@@ -124,13 +133,16 @@ public class MenuBiblioteca {
       System.out.print("Nuevo precio: ");
       double precio = sc.nextDouble();
 
-      //Se usa el metodo de la clase biblioteca
       biblioteca.actualizarPublicacion(id, titulo, autor, precio);
+      System.out.println("Publicación actualizada.");
 
+    } catch (PublicacionNoEncontrada | PrecioInvalido e) {
+      System.out.println(e.getMessage());
     } catch (Exception e) {
-      System.out.println("Error al actualizar.");
+      System.out.println("Entrada inválida.");
+      sc.nextLine();
     }
-  } //cierre del metodo actualizar
+  }//cierre del metodo actualizar
 
   //Inicio del metodo para eliminar publicaciones
   private void eliminar() {
@@ -138,13 +150,13 @@ public class MenuBiblioteca {
       System.out.print("ID a eliminar: ");
       int id = sc.nextInt();
 
-      //se usa el metodo de la clase biblioteca
-      biblioteca.eliminarPublicacion(id); //se elimina por id
+      biblioteca.eliminarPublicacion(id);
+      System.out.println("Publicación eliminada.");
 
-    } catch (Exception e) {
-      System.out.println("Error eliminando publicación.");
+    } catch (PublicacionNoEncontrada e) {
+      System.out.println(e.getMessage());
     }
-  } //Cierre del metodo para eliminar publicaciones
+  }//Cierre del metodo para eliminar publicaciones
 } //Cierre de la clase Principal
 
 
